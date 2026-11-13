@@ -1,0 +1,422 @@
+<title>Tailender — Theme Catalogue</title>
+
+<style>
+  /* ============ Catalogue chrome ============ */
+  * { box-sizing: border-box; }
+  :root { --chrome-bg:#0b0d12; --chrome-ink:#e7e9ee; --chrome-mut:#8b93a7; --chrome-line:#20242e; }
+
+  .cat { background: var(--chrome-bg); color: var(--chrome-ink);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+    min-height: 100%; padding-bottom: 80px; }
+
+  .cat-nav { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--chrome-bg) 82%, transparent);
+    border-bottom: 1px solid var(--chrome-line);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+    padding: 12px clamp(16px, 4vw, 40px); }
+  .cat-nav b { font-size: 15px; letter-spacing: .04em; }
+  .cat-nav .sp { flex: 1; }
+  .cat-nav a { color: var(--chrome-mut); text-decoration: none; font-size: 12.5px;
+    padding: 5px 9px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+  .cat-nav a:hover { color: var(--chrome-ink); border-color: var(--chrome-line); background:#141821; }
+
+  .cat-intro { max-width: 760px; margin: 0 auto; padding: 40px clamp(16px,4vw,40px) 8px; }
+  .cat-intro h1 { font-size: clamp(26px, 4vw, 38px); margin: 0 0 10px; letter-spacing: -.01em; text-wrap: balance; }
+  .cat-intro p { color: var(--chrome-mut); line-height: 1.55; margin: 0 0 8px; max-width: 62ch; }
+
+  .frame { max-width: 1120px; margin: 44px auto 0; padding: 0 clamp(12px,3vw,32px); scroll-margin-top: 70px; }
+  .frame-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin-bottom: 14px; }
+  .frame-head .n { font-variant-numeric: tabular-nums; color: var(--chrome-mut); font-size: 13px; letter-spacing:.14em; }
+  .frame-head h2 { margin: 0; font-size: 20px; letter-spacing: -.01em; }
+  .frame-head .font { color: var(--chrome-mut); font-size: 12.5px; }
+  .frame-head p { width: 100%; margin: 2px 0 0; color: var(--chrome-mut); font-size: 13.5px; line-height: 1.5; max-width: 72ch; }
+  .swatches { display: inline-flex; gap: 5px; margin-left: 2px; }
+  .swatches i { width: 15px; height: 15px; border-radius: 4px; display: inline-block; border: 1px solid #ffffff22; }
+
+  /* The device the landing renders inside */
+  .screen { border-radius: 16px; overflow: hidden; border: 1px solid var(--chrome-line);
+    box-shadow: 0 30px 80px -40px #000; }
+
+  /* ============ Shared landing structure (themed via vars) ============ */
+  .page { background: var(--bg); color: var(--ink); font-family: var(--font-body);
+    padding: clamp(18px, 3vw, 34px); display: flex; flex-direction: column; gap: 22px;
+    position: relative; isolation: isolate; }
+  .page::before { content:""; position:absolute; inset:0; z-index:-1; background: var(--bg-deco, transparent); pointer-events:none; }
+
+  .topbar { display: flex; align-items: center; gap: 12px; }
+  .brand { font-family: var(--font-display); font-weight: var(--display-wt, 800);
+    font-size: clamp(20px, 3vw, 26px); letter-spacing: var(--display-ls, .02em); color: var(--brand, var(--ink));
+    text-transform: var(--display-tt, none); }
+  .beta { font-size: 10px; letter-spacing: .12em; padding: 3px 7px; border-radius: 4px;
+    background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); text-transform: uppercase; font-weight: 700; }
+  .topbar .sp { flex: 1; }
+  .chiprow { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+  .chiprow .pill { padding: 4px 9px; border-radius: 999px; background: var(--panel); border: var(--hair); }
+
+  .hero { display: grid; grid-template-columns: 1.3fr .7fr; gap: 20px; align-items: center; }
+  @media (max-width: 720px){ .hero { grid-template-columns: 1fr; } }
+  .eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: 11.5px; color: var(--accent-2, var(--accent)); font-weight: 700; }
+  .hero h1 { font-family: var(--font-display); font-weight: var(--display-wt, 800);
+    font-size: clamp(30px, 6vw, 58px); line-height: var(--h1-lh, 1.02); margin: 12px 0 0;
+    letter-spacing: var(--h1-ls, -.02em); text-transform: var(--display-tt, none); text-wrap: balance; color: var(--ink); }
+  .hero h1 .hl { color: var(--accent); }
+  .hero p.sub { margin: 16px 0 0; color: var(--muted); line-height: 1.5; font-size: clamp(14px,1.6vw,16px); max-width: 44ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .btn { font-family: var(--btn-font, var(--font-body)); font-weight: 700; cursor: pointer;
+    border: var(--btn-border, none); border-radius: var(--radius); padding: 14px 22px; font-size: 15px;
+    letter-spacing: var(--btn-ls, 0); text-transform: var(--btn-tt, none);
+    background: var(--accent); color: var(--accent-ink); box-shadow: var(--btn-shadow, none); transition: transform .08s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.ghost { background: transparent; color: var(--ink); border: var(--ghost-border, 1px solid var(--border-col)); box-shadow: none; }
+
+  .mascot { justify-self: center; position: relative; text-align: center; }
+  .mascot .roo { font-size: clamp(70px, 12vw, 120px); line-height: 1; filter: var(--mascot-filter, none); }
+  .mascot .spark { position: absolute; font-size: 22px; top: -4px; right: 8px; }
+  .mascot .ball { position: absolute; bottom: 6px; left: -2px; font-size: 26px; }
+
+  .card { background: var(--panel); border: var(--card-border, var(--hair)); border-radius: var(--radius);
+    box-shadow: var(--card-shadow, none); overflow: hidden; }
+  .today { display: grid; grid-template-columns: auto 1fr; }
+  .today .date { background: var(--accent); color: var(--accent-ink); padding: 16px 18px; text-align: center;
+    display: flex; flex-direction: column; justify-content: center; gap: 2px; font-family: var(--font-display);
+    letter-spacing: .04em; }
+  .today .date .d { font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .today .date .m, .today .date .w { font-size: 11px; letter-spacing: .14em; opacity: .9; }
+  .today .body { padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .today .eyebrow2 { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .today .score { font-family: var(--font-display); font-size: clamp(30px,5vw,44px); line-height: 1; display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
+  .today .score small { font-size: 16px; color: var(--muted); font-family: var(--font-body); font-weight: 600; }
+  .today .next { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .today .next b { color: var(--ink); }
+
+  .streak { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius);
+    background: var(--panel-2, var(--panel)); border: var(--hair); font-size: 13.5px; }
+  .streak .dots { margin-left: auto; display: inline-flex; gap: 4px; }
+  .streak .dots i { width: 10px; height: 10px; border-radius: 2px; background: var(--accent); display: inline-block; }
+  .streak .dots i.off { background: var(--border-col); }
+
+  .sect-h { font-family: var(--font-display); font-size: 14px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .sect-h::after { content:""; flex:1; height:0; border-top: var(--divider, 1px dashed var(--border-col)); }
+
+  .tiers { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tier { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: var(--chip-radius, 999px);
+    background: var(--panel); border: var(--hair); font-size: 13px; font-weight: 600; }
+  .tier b { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 700; }
+  .tier.rare { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+  .tier.rare b { color: var(--accent-ink); opacity: .85; }
+
+  .board { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px){ .board { grid-template-columns: 1fr; } }
+  .cap { padding: 14px 16px; border-radius: var(--radius); background: var(--panel); border: var(--card-border, var(--hair)); display: flex; align-items: center; gap: 12px; }
+  .cap .ico { font-size: 26px; }
+  .cap .meta { display: flex; flex-direction: column; }
+  .cap .meta .lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .cap .meta .who { font-weight: 700; font-size: 15px; }
+  .cap .pts { margin-left: auto; font-family: var(--font-display); font-variant-numeric: tabular-nums; font-size: 18px; }
+  .cap.orange .ico { color: #f6861f; } .cap.purple .ico { color: #a06cff; }
+
+  .foot { text-align: center; color: var(--muted); font-size: 12px; letter-spacing: .04em; padding-top: 4px; }
+
+  /* ======================================================= */
+  /* THEME 1 — Retro Pixel Arcade   (ship: Press Start 2P)    */
+  /* ======================================================= */
+  .t1 {
+    --bg: #141a4e; --bg-deco: linear-gradient(#141a4e,#0e123a) , repeating-linear-gradient(0deg,#ffffff05 0 2px,transparent 2px 4px);
+    --ink: #f4ecd6; --muted: #aeb6e0; --accent: #f5b426; --accent-ink: #1a1240; --accent-2:#6fe08a;
+    --brand:#f4ecd6; --panel: #1c2360; --panel-2:#202870; --border-col:#3a44a0;
+    --font-display: "Courier New", ui-monospace, monospace; --font-body: "Courier New", ui-monospace, monospace;
+    --display-wt: 700; --display-tt: uppercase; --display-ls: .04em; --h1-ls: .02em; --h1-lh: 1.1;
+    --radius: 0; --hair: 2px solid #3a44a0; --card-border: 3px solid #0c103a;
+    --card-shadow: 4px 4px 0 #0c103a; --btn-shadow: 4px 4px 0 #b97f12; --btn-border: 3px solid #0c103a;
+    --btn-tt: uppercase; --btn-ls:.06em; --ghost-border:3px solid #3a44a0; --chip-radius:0;
+    --divider: 2px dashed #4b56bd; --mascot-filter: contrast(1.1) saturate(1.1);
+  }
+  .t1 .brand, .t1 .hero h1 { text-shadow: 3px 3px 0 #0c103a; }
+  .t1 .tier { box-shadow: 2px 2px 0 #0c103a; }
+
+  /* ======================================================= */
+  /* THEME 2 — Floodlit Broadcast   (ship: Anton / Oswald)    */
+  /* ======================================================= */
+  .t2 {
+    --bg: radial-gradient(120% 90% at 50% -20%, #16304a 0%, #070b12 62%);
+    --ink: #eef4f8; --muted: #8fa3b4; --accent: #ff3b3b; --accent-ink: #fff; --accent-2:#2ee6a0;
+    --brand:#fff; --panel: #0e1621; --panel-2:#0b131c; --border-col:#1e2c3a;
+    --font-display: "Arial Narrow", "Helvetica Neue", Arial, sans-serif; --font-body: "Helvetica Neue", Arial, sans-serif;
+    --display-wt: 800; --display-tt: uppercase; --display-ls: .01em; --h1-ls: -.01em; --h1-lh: .96;
+    --radius: 6px; --hair: 1px solid #1e2c3a; --card-border: 1px solid #1e2c3a;
+    --btn-tt: uppercase; --btn-ls:.06em; --divider: 1px solid #22303f;
+  }
+  .t2 .hero h1 { transform: scaleY(1.06); transform-origin: left; }
+  .t2 .chiprow .pill.live { color:#ff5a5a; } .t2 .chiprow .pill.live::before{content:"● "; }
+  .t2 .today .date { background: linear-gradient(#ff3b3b,#c21b1b); }
+  .t2 .score { color: #2ee6a0; text-shadow: 0 0 22px #2ee6a055; }
+
+  /* ======================================================= */
+  /* THEME 3 — Neon Glass / After Dark   (ship: Geist)        */
+  /* ======================================================= */
+  .t3 {
+    --bg: radial-gradient(90% 60% at 80% -10%, #3a1d63 0%, transparent 55%),
+          radial-gradient(80% 60% at 0% 10%, #122b5e 0%, transparent 55%), #0a0912;
+    --ink: #f2effa; --muted: #a39bc0; --accent: #8b5cf6; --accent-ink: #fff; --accent-2:#38e8d0;
+    --brand:#fff; --panel: #ffffff0d; --panel-2:#ffffff08; --border-col:#ffffff1f;
+    --font-display: "Helvetica Neue", system-ui, Arial, sans-serif; --font-body: "Helvetica Neue", system-ui, Arial, sans-serif;
+    --display-wt: 800; --h1-ls: -.03em; --h1-lh: 1.0;
+    --radius: 16px; --hair: 1px solid #ffffff1f; --card-border: 1px solid #ffffff1f;
+    --card-shadow: 0 20px 50px -30px #000, inset 0 1px 0 #ffffff14; --divider: 1px solid #ffffff14;
+  }
+  .t3 .card, .t3 .streak, .t3 .tier, .t3 .cap { backdrop-filter: blur(14px); }
+  .t3 .hero h1 .hl { background: linear-gradient(90deg,#8b5cf6,#38e8d0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .t3 .btn { box-shadow: 0 14px 40px -12px #8b5cf6aa; }
+  .t3 .today .date { background: linear-gradient(135deg,#8b5cf6,#5b2fd6); }
+
+  /* ======================================================= */
+  /* THEME 4 — Vintage Scorebook   (ship: Playfair + slab)    */
+  /* ======================================================= */
+  .t4 {
+    --bg: #efe4c8; --bg-deco: repeating-linear-gradient(0deg, #00000006 0 27px, #7a2e2214 27px 28px);
+    --ink: #2a2218; --muted: #7c6a4c; --accent: #7a2e22; --accent-ink: #f3ead3; --accent-2:#5f7a4e;
+    --brand:#2a2218; --panel: #f6eed8; --panel-2:#f1e6cc; --border-col:#cdbd97;
+    --font-display: Georgia, "Times New Roman", serif; --font-body: Georgia, "Times New Roman", serif;
+    --display-wt: 700; --h1-ls: -.01em; --h1-lh: 1.04;
+    --radius: 3px; --hair: 1px solid #cdbd97; --card-border: 1.5px solid #8a6f3f;
+    --divider: 1px solid #b9a877; --chip-radius: 3px;
+  }
+  .t4 .brand { font-style: italic; }
+  .t4 .eyebrow, .t4 .sect-h, .t4 .today .eyebrow2, .t4 .cap .meta .lbl { font-variant: small-caps; letter-spacing: .06em; text-transform: none; }
+  .t4 .hero h1 { font-style: italic; }
+
+  /* ======================================================= */
+  /* THEME 5 — Neo-Brutalist   (ship: Archivo / Space Mono)   */
+  /* ======================================================= */
+  .t5 {
+    --bg: #f4e7b8; --ink: #141414; --muted: #4a4636; --accent: #2b4bff; --accent-ink: #fff; --accent-2:#e5195a;
+    --brand:#141414; --panel: #fffdf4; --panel-2:#ffe600; --border-col:#141414;
+    --font-display: "Arial Black", Helvetica, sans-serif; --font-body: Helvetica, Arial, sans-serif;
+    --display-wt: 900; --display-tt: uppercase; --h1-ls: -.03em; --h1-lh: .92;
+    --radius: 0; --hair: 2px solid #141414; --card-border: 3px solid #141414;
+    --card-shadow: 7px 7px 0 #141414; --btn-shadow: 5px 5px 0 #141414; --btn-border: 3px solid #141414;
+    --btn-tt: uppercase; --btn-ls:.02em; --ghost-border:3px solid #141414; --chip-radius:0; --divider: 3px solid #141414;
+  }
+  .t5 .beta { border: 2px solid #141414; }
+  .t5 .tier { box-shadow: 3px 3px 0 #141414; }
+  .t5 .streak { box-shadow: 4px 4px 0 #141414; }
+  .t5 .cap.purple { background: #ffe600; }
+
+  /* ======================================================= */
+  /* THEME 6 — Minimal Daily   (ship: Fraunces + Inter)       */
+  /* ======================================================= */
+  .t6 {
+    --bg: #faf8f3; --ink: #1b1a17; --muted: #86806f; --accent: #2f6b45; --accent-ink: #fff; --accent-2:#2f6b45;
+    --brand:#1b1a17; --panel: #ffffff; --panel-2:#f3f1ea; --border-col:#e7e3d8;
+    --font-display: Georgia, "Times New Roman", serif; --font-body: "Helvetica Neue", Arial, system-ui, sans-serif;
+    --display-wt: 600; --h1-ls: -.02em; --h1-lh: 1.05;
+    --radius: 12px; --hair: 1px solid #e7e3d8; --card-border: 1px solid #e7e3d8;
+    --card-shadow: 0 10px 30px -22px #00000040; --divider: 1px solid #e7e3d8;
+  }
+  .t6 .hero h1 { font-weight: 600; }
+  .t6 .eyebrow { color:#86806f; font-weight:600; }
+  .t6 .hero h1 .hl { font-style: italic; color:#2f6b45; }
+
+  @media (prefers-reduced-motion: reduce){ .btn { transition: none; } }
+</style>
+
+<div class="cat">
+  <nav class="cat-nav">
+    <b>🦘 Tailender · Theme Catalogue</b>
+    <span class="sp"></span>
+    <a href="#t1">01 Pixel Arcade</a>
+    <a href="#t2">02 Broadcast</a>
+    <a href="#t3">03 Neon Glass</a>
+    <a href="#t4">04 Scorebook</a>
+    <a href="#t5">05 Brutalist</a>
+    <a href="#t6">06 Minimal</a>
+  </nav>
+
+  <div class="cat-intro">
+    <h1>Six directions for Tailender</h1>
+    <p>Each card below is the <b>same landing page</b> rendered in a different visual theme, so you're comparing styling, not content. Scroll, compare, and tell me which one to build — or mix (e.g. one theme's type with another's layout).</p>
+    <p style="font-size:13px;opacity:.8">Note: artifacts can't load webfonts, so each theme uses a system-font stand-in. The real font each theme ships with is named next to its title.</p>
+  </div>
+
+  <!-- ============ THEME 1 ============ -->
+  <section class="frame" id="t1">
+    <div class="frame-head">
+      <span class="n">01</span><h2>Pixel Arcade</h2>
+      <span class="font">· ships with <b>Press Start 2P</b></span>
+      <span class="swatches"><i style="background:#141a4e"></i><i style="background:#f5b426"></i><i style="background:#f4ecd6"></i><i style="background:#6fe08a"></i></span>
+      <p>16-bit retro, like Unicorner: chunky stepped borders, hard pixel shadows, gold-on-navy, “PRESS START” energy. Toy-like and unmistakably a game.</p>
+    </div>
+    <div class="screen"><div class="page t1">
+      <div class="topbar"><span class="brand">Tailender</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill">🔥 9</span><span class="pill">🏆</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Press Start</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+  <!-- ============ THEME 2 ============ -->
+  <section class="frame" id="t2">
+    <div class="frame-head">
+      <span class="n">02</span><h2>Floodlit Broadcast</h2>
+      <span class="font">· ships with <b>Anton / Oswald</b></span>
+      <span class="swatches"><i style="background:#070b12"></i><i style="background:#ff3b3b"></i><i style="background:#2ee6a0"></i><i style="background:#eef4f8"></i></span>
+      <p>Live TV cricket energy: dark stadium, condensed bold caps, a glowing neon score readout, “LIVE” dot and lower-third bars. Sporty and high-stakes.</p>
+    </div>
+    <div class="screen"><div class="page t2">
+      <div class="topbar"><span class="brand">TAILENDER</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill live">Live</span><span class="pill">🔥 9</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Play Tailender #1</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+  <!-- ============ THEME 3 ============ -->
+  <section class="frame" id="t3">
+    <div class="frame-head">
+      <span class="n">03</span><h2>Neon Glass · After Dark</h2>
+      <span class="font">· ships with <b>Geist</b></span>
+      <span class="swatches"><i style="background:#0a0912"></i><i style="background:#8b5cf6"></i><i style="background:#38e8d0"></i><i style="background:#f2effa"></i></span>
+      <p>The modern, premium app look (this is where Magic UI shines): frosted glass cards, gradient glow, soft rounded geometry. Sleek and contemporary.</p>
+    </div>
+    <div class="screen"><div class="page t3">
+      <div class="topbar"><span class="brand">Tailender</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill">🔥 9</span><span class="pill">🏆</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Play Tailender #1</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+  <!-- ============ THEME 4 ============ -->
+  <section class="frame" id="t4">
+    <div class="frame-head">
+      <span class="n">04</span><h2>Vintage Scorebook</h2>
+      <span class="font">· ships with <b>Playfair Display + a slab</b></span>
+      <span class="swatches"><i style="background:#efe4c8"></i><i style="background:#7a2e22"></i><i style="background:#5f7a4e"></i><i style="background:#2a2218"></i></span>
+      <p>An old cricket scorecard / Wisden ledger: aged paper, ruled lines, ink serif, small-caps labels, oxblood accents. Classic, heritage, editorial.</p>
+    </div>
+    <div class="screen"><div class="page t4">
+      <div class="topbar"><span class="brand">Tailender</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill">🔥 9</span><span class="pill">🏆</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Take guard</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+  <!-- ============ THEME 5 ============ -->
+  <section class="frame" id="t5">
+    <div class="frame-head">
+      <span class="n">05</span><h2>Neo-Brutalist</h2>
+      <span class="font">· ships with <b>Archivo / Space Mono</b></span>
+      <span class="swatches"><i style="background:#f4e7b8"></i><i style="background:#141414"></i><i style="background:#2b4bff"></i><i style="background:#ffe600"></i></span>
+      <p>Loud and trendy: thick black borders, hard offset shadows, flat blocks of colour, oversized type. Bold, playful, impossible to ignore.</p>
+    </div>
+    <div class="screen"><div class="page t5">
+      <div class="topbar"><span class="brand">TAILENDER</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill">🔥 9</span><span class="pill">🏆</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Play Tailender #1</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+  <!-- ============ THEME 6 ============ -->
+  <section class="frame" id="t6">
+    <div class="frame-head">
+      <span class="n">06</span><h2>Minimal Daily</h2>
+      <span class="font">· ships with <b>Fraunces + Inter</b></span>
+      <span class="swatches"><i style="background:#faf8f3"></i><i style="background:#2f6b45"></i><i style="background:#1b1a17"></i><i style="background:#e7e3d8"></i></span>
+      <p>The calm, refined NYT-Games feel: warm off-white, an elegant serif headline, generous whitespace, a single restrained green accent. Understated and grown-up.</p>
+    </div>
+    <div class="screen"><div class="page t6">
+      <div class="topbar"><span class="brand">Tailender</span><span class="beta">Beta</span><span class="sp"></span><span class="chiprow"><span class="pill">🔥 9</span><span class="pill">🏆</span></span></div>
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Daily cricket trivia · Intl + IPL</div>
+          <h1>How deep is your <span class="hl">cricket</span> knowledge?</h1>
+          <p class="sub">Five questions a day, 30 seconds each. The obvious answer scores least — name the one nobody else will.</p>
+          <div class="cta"><button class="btn">▶ Play Tailender #1</button><button class="btn ghost">How to play</button></div>
+        </div>
+        <div class="mascot"><span class="spark">✨</span><div class="roo">🦘</div><span class="ball">🏏</span></div>
+      </div>
+      <div class="card today"><div class="date"><span class="w">Fri</span><span class="d">30</span><span class="m">Oct</span></div>
+        <div class="body"><span class="eyebrow2">Yesterday · played ✓</span><div class="score">190<small>/500 · Middle order</small></div><div class="next">Next Tailender in <b>08:24:52</b></div></div></div>
+      <div class="streak">🔥 <span><b>9-day streak</b> — back tomorrow to make it 10</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span></div>
+      <div class="sect-h">How scoring works</div>
+      <div class="tiers"><span class="tier">🦆 Duck <b>0</b></span><span class="tier">🔟 Single <b>10</b></span><span class="tier">🕑 Double <b>20</b></span><span class="tier">🪢 Boundary <b>40</b></span><span class="tier">✋ Half Century <b>50</b></span><span class="tier">🏏 Six <b>60</b></span><span class="tier rare">💯 Century <b>100</b></span></div>
+      <div class="board"><div class="cap orange"><span class="ico">🧢</span><div class="meta"><span class="lbl">Orange Cap · this week</span><span class="who">@cover_drive_99</span></div><span class="pts">2410</span></div>
+        <div class="cap purple"><span class="ico">🧢</span><div class="meta"><span class="lbl">Purple Cap · today</span><span class="who">@gully_guru</span></div><span class="pts">420</span></div></div>
+      <div class="foot">Tailender · a daily cricket game · © 2026</div>
+    </div></div>
+  </section>
+
+</div>

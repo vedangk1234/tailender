@@ -1,0 +1,298 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Tailender theme — "cricket brutalist": bone paper + ink black, pitch-green &
+   cherry-red (the ball) with a cobalt pop. Thick borders, hard shadows, and a
+   ball-seam stitch as the signature detail. */
+@theme {
+  --color-bone: #f3ecd9;
+  --color-paper: #fcf8ee;
+  --color-ink: #141210;
+  --color-pitch: #2f8f4e;
+  --color-pitch-deep: #1f6b39;
+  --color-cherry: #d81f3c;
+  --color-cobalt: #2b4bff;
+  --color-sun: #ffc83d;
+  --color-cream: #f3ecd9;
+  --color-orange-cap: #f6861f;
+  --color-purple-cap: #7c3aed;
+  --color-ball: #d81f3c;
+  --color-ball-red: #c8102e; /* cherry red of a test-match leather ball */
+
+  --font-display: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: light;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+/* Cherry-red "leather ball" text with a pulsing glow. */
+.glow-ball {
+  color: var(--color-ball-red);
+  animation: ball-pulse 2.2s ease-in-out infinite;
+}
+@keyframes ball-pulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 6px rgba(200, 16, 46, 0.9),
+      0 0 16px rgba(200, 16, 46, 0.65),
+      0 0 30px rgba(200, 16, 46, 0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(200, 16, 46, 1),
+      0 0 26px rgba(200, 16, 46, 0.85),
+      0 0 48px rgba(200, 16, 46, 0.6);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-ball {
+    animation: none;
+    text-shadow:
+      0 0 8px rgba(200, 16, 46, 0.9),
+      0 0 20px rgba(200, 16, 46, 0.6);
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Hide scrollbars everywhere while keeping scroll functional. */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none; /* Chrome/Safari */
+}
+
+body {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+
+  /* Stadium background image, held fixed behind the game — true colors, no
+     tint, and sized so the whole stadium is visible (not zoomed/cropped). */
+  background-color: var(--color-bone);
+  background-image: url("/BG.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* The "ground" surface — our original bone paper + pitch-crease grid.
+   Used as the one big card that holds the game's content. */
+.ground-card {
+  background-color: var(--color-bone);
+  background-image:
+    linear-gradient(0deg, #14121008 1px, transparent 1px),
+    linear-gradient(90deg, #14121008 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* FALLBACK (previous theme) — bone paper + pitch-crease grid.
+   To revert, remove the stadium block above and uncomment this:
+body {
+  background-color: var(--color-bone);
+  background-image:
+    linear-gradient(0deg, #14121008 1px, transparent 1px),
+    linear-gradient(90deg, #14121008 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+*/
+
+/* ---- Brutalist cricket helpers ---- */
+.brut { border: 3px solid var(--color-ink); box-shadow: 6px 6px 0 var(--color-ink); }
+.brut-sm { border: 2.5px solid var(--color-ink); box-shadow: 4px 4px 0 var(--color-ink); }
+.brut-tap { transition: transform .08s ease, box-shadow .08s ease; }
+.brut-tap:active { transform: translate(4px, 4px); box-shadow: 1px 1px 0 var(--color-ink); }
+/* ball-seam: dashed cherry stitch inset — the signature detail */
+.seam { position: relative; }
+.seam::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--color-cherry);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Subtle floodlight grain for atmosphere */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  --animate-shiny-text: shiny-text 8s infinite;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+  @keyframes shiny-text {
+  0%, 90%, 100% {
+    background-position: calc(-100% - var(--shiny-width)) 0;
+    }
+  30%, 60% {
+    background-position: calc(100% + var(--shiny-width)) 0;
+    }
+  }
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
