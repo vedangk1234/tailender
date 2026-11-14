@@ -10,8 +10,7 @@ import {
   type TierId,
 } from "@/lib/scoring";
 import { leagueFor } from "@/lib/leagues";
-import type { Scorecard } from "@/lib/scorecard";
-import { PUZZLE_NUMBER } from "@/data/mockDaily";
+import type { ScoreItem } from "@/lib/api";
 import { mascotById } from "@/data/mascots";
 import { tierColor } from "./TierBadge";
 
@@ -33,10 +32,10 @@ function ScoreTiles({ score }: { score: number }) {
   );
 }
 
-function HighlightRow({ item }: { item: Scorecard["items"][number] }) {
-  const tier = TIERS[item.tier];
+function HighlightRow({ item }: { item: ScoreItem }) {
+  const tier = TIERS[item.tier as TierId];
   const scored = item.tier !== "duck";
-  const color = tierColor(item.tier);
+  const color = tierColor(item.tier as TierId);
   return (
     <div className="brut-sm flex items-center gap-3 rounded-xl bg-paper px-4 py-3">
       <div className="min-w-0 flex-1">
@@ -65,32 +64,36 @@ function HighlightRow({ item }: { item: Scorecard["items"][number] }) {
 }
 
 export function ScorecardModal({
-  scorecard,
+  items,
+  total,
+  puzzleNumber,
   selectedId,
   onClose,
 }: {
-  scorecard: Scorecard;
+  items: ScoreItem[];
+  total: number;
+  puzzleNumber: number;
   selectedId: string;
   onClose: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const league = leagueFor(scorecard.total);
+  const league = leagueFor(total);
   const mascot = mascotById(selectedId);
 
   // Best answers first.
   const ordered = useMemo(
     () =>
-      [...scorecard.items].sort(
-        (a, b) => TIER_ORDER.indexOf(b.tier) - TIER_ORDER.indexOf(a.tier)
+      [...items].sort(
+        (a, b) => TIER_ORDER.indexOf(b.tier as TierId) - TIER_ORDER.indexOf(a.tier as TierId)
       ),
-    [scorecard.items]
+    [items]
   );
 
   async function share() {
     const text = buildShareText({
-      puzzleNumber: PUZZLE_NUMBER,
-      totalScore: scorecard.total,
-      tiers: scorecard.items.map((i) => i.tier as TierId),
+      puzzleNumber,
+      totalScore: total,
+      tiers: items.map((i) => i.tier as TierId),
       shareUrl: "https://tailender.game",
     });
     try {
@@ -123,7 +126,7 @@ export function ScorecardModal({
         <div className="mb-4 flex items-start justify-between">
           <div>
             <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-ink/55">
-              Today's scorecard · #{PUZZLE_NUMBER}
+              Today's scorecard · #{puzzleNumber}
             </p>
             <h2 className="font-display text-2xl uppercase tracking-tight text-ink">
               Final whistle
@@ -147,7 +150,7 @@ export function ScorecardModal({
             style={{ imageRendering: "pixelated" }}
           />
           <div className="flex flex-1 flex-col items-center gap-3">
-            <ScoreTiles score={scorecard.total} />
+            <ScoreTiles score={total} />
             <span className="font-mono text-xs font-bold uppercase tracking-widest text-ink/50">
               out of {MAX_DAILY_SCORE}
             </span>

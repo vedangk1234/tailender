@@ -1,18 +1,21 @@
 import { motion } from "motion/react";
-import { X, Check } from "lucide-react";
+import { X, Check, Lock } from "lucide-react";
 import { MASCOTS } from "@/data/mascots";
 import { cn } from "@/lib/utils";
 
-/** The collection: browse all 20 jerseys and equip one. */
+/** The collection: browse all 20 jerseys; equip any you've unlocked. */
 export function MascotsModal({
   selectedId,
+  unlocked,
   onSelect,
   onClose,
 }: {
   selectedId: string;
+  unlocked: string[];
   onSelect: (id: string) => void;
   onClose: () => void;
 }) {
+  const owned = new Set(unlocked);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -37,7 +40,7 @@ export function MascotsModal({
               Mascots
             </h2>
             <p className="font-mono text-[11px] uppercase tracking-widest text-ink/50">
-              Collect all 20 · tap to equip
+              {owned.size}/20 unlocked · tap to equip
             </p>
           </div>
           <button
@@ -53,18 +56,26 @@ export function MascotsModal({
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {MASCOTS.map((m) => {
             const equipped = m.id === selectedId;
+            const isOwned = owned.has(m.id);
             return (
               <button
                 key={m.id}
-                onClick={() => onSelect(m.id)}
+                onClick={() => isOwned && onSelect(m.id)}
+                disabled={!isOwned}
                 className={cn(
                   "brut-sm brut-tap relative flex flex-col items-center gap-1 rounded-2xl bg-paper p-3 text-center",
-                  equipped && "ring-4 ring-pitch"
+                  equipped && "ring-4 ring-pitch",
+                  !isOwned && "cursor-default"
                 )}
               >
                 {equipped && (
-                  <span className="absolute right-2 top-2 flex items-center gap-1 rounded border-2 border-ink bg-pitch px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase text-paper">
+                  <span className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded border-2 border-ink bg-pitch px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase text-paper">
                     <Check size={10} /> On
+                  </span>
+                )}
+                {!isOwned && (
+                  <span className="absolute right-2 top-2 z-10 grid size-5 place-items-center rounded border-2 border-ink bg-ink text-paper">
+                    <Lock size={10} />
                   </span>
                 )}
                 <div className="flex h-24 w-full items-end justify-center">
@@ -72,11 +83,11 @@ export function MascotsModal({
                     src={m.img}
                     alt={m.name}
                     loading="lazy"
-                    className="max-h-24 w-auto object-contain"
+                    className={cn("max-h-24 w-auto object-contain", !isOwned && "opacity-30 grayscale")}
                     style={{ imageRendering: "pixelated" }}
                   />
                 </div>
-                <span className="mt-1 text-xs font-extrabold leading-tight text-ink">
+                <span className={cn("mt-1 text-xs font-extrabold leading-tight", isOwned ? "text-ink" : "text-ink/40")}>
                   {m.name}
                 </span>
                 <span className="font-mono text-[9px] uppercase leading-tight tracking-wide text-ink/50">
@@ -88,7 +99,7 @@ export function MascotsModal({
         </div>
 
         <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-widest text-ink/40">
-          Preview mode · unlocks activate with your account
+          Earn jerseys by hitting their achievements
         </p>
       </motion.div>
     </motion.div>

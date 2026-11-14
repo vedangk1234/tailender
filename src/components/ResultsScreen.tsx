@@ -1,33 +1,28 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import { Copy, Check, Home } from "lucide-react";
-import {
-  buildShareText,
-  MAX_DAILY_SCORE,
-  TIERS,
-  tierPoints,
-  type TierId,
-} from "@/lib/scoring";
-import { PUZZLE_NUMBER, DAILY_QUESTIONS } from "@/data/mockDaily";
+import { buildShareText, MAX_DAILY_SCORE, TIERS, type TierId } from "@/lib/scoring";
+import type { ScoreItem } from "@/lib/api";
 import { TierBadge } from "./TierBadge";
 
 export function ResultsScreen({
-  results,
+  items,
+  total,
+  puzzleNumber,
   onHome,
 }: {
-  results: TierId[];
+  items: ScoreItem[];
+  total: number;
+  puzzleNumber: number;
   onHome: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const total = useMemo(
-    () => results.reduce((s, t) => s + tierPoints(t), 0),
-    [results]
-  );
+  const tiers = items.map((i) => i.tier as TierId);
 
   const shareText = buildShareText({
-    puzzleNumber: PUZZLE_NUMBER,
+    puzzleNumber,
     totalScore: total,
-    tiers: results,
+    tiers,
     shareUrl: "https://tailender.game",
   });
 
@@ -37,7 +32,7 @@ export function ResultsScreen({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* clipboard blocked — no-op for the slice */
+      /* clipboard blocked */
     }
   }
 
@@ -47,10 +42,9 @@ export function ResultsScreen({
       animate={{ opacity: 1, y: 0 }}
       className="mx-auto flex min-h-dvh w-full max-w-[797px] flex-col gap-6 px-4 py-9"
     >
-      {/* Score headline */}
       <div className="brut seam rounded-2xl bg-cobalt px-6 py-6 text-paper">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-paper/70">
-          Tailender #{PUZZLE_NUMBER} · Final
+          Tailender #{puzzleNumber} · Final
         </p>
         <div className="font-display text-7xl leading-none tabular-nums">
           {total}
@@ -58,9 +52,8 @@ export function ResultsScreen({
         </div>
       </div>
 
-      {/* Per-question breakdown */}
       <div className="flex flex-col gap-2">
-        {results.map((t, i) => (
+        {items.map((it, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: -8 }}
@@ -70,21 +63,20 @@ export function ResultsScreen({
           >
             <span className="font-display w-6 text-ink/40">{i + 1}</span>
             <span className="flex-1 truncate text-sm font-semibold text-ink/75">
-              {DAILY_QUESTIONS[i].prompt}
+              {it.prompt}
             </span>
-            <TierBadge id={t} size="sm" showPoints={false} />
+            <TierBadge id={it.tier as TierId} size="sm" showPoints={false} />
           </motion.div>
         ))}
       </div>
 
-      {/* Share card */}
       <div className="brut rounded-2xl bg-paper p-5">
         <div className="font-mono text-sm leading-relaxed text-ink">
           <div className="font-bold">
-            Tailender #{PUZZLE_NUMBER} · {total}/{MAX_DAILY_SCORE}
+            Tailender #{puzzleNumber} · {total}/{MAX_DAILY_SCORE}
           </div>
           <div className="my-2 text-2xl tracking-wide">
-            {results.map((t) => TIERS[t].emoji).join(" ")}
+            {tiers.map((t) => TIERS[t].emoji).join(" ")}
           </div>
           <div className="text-pitch-deep">tailender.game</div>
         </div>
@@ -106,7 +98,7 @@ export function ResultsScreen({
       </button>
 
       <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-ink/50">
-        Come back tomorrow for #{PUZZLE_NUMBER + 1}
+        Come back tomorrow for #{puzzleNumber + 1}
       </p>
     </motion.div>
   );

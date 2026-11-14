@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence } from "motion/react";
-import { istDateKey } from "@/lib/time";
-import { tierPoints } from "@/lib/scoring";
-import {
-  loadTodayScorecard,
-  saveScorecard,
-  type Scorecard,
-} from "@/lib/scorecard";
-import { DAILY_QUESTIONS } from "@/data/mockDaily";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useGame } from "@/game/useGame";
 import { useAuth } from "@/auth/useAuth";
-import { useMascots } from "@/mascots/useMascots";
+import { api, loadHome, type HomeData } from "@/lib/api";
+import { puzzleNumber as puzzleFor } from "@/lib/time";
 import { Loader } from "@/components/Loader";
 import { StartScreen } from "@/components/StartScreen";
 import { HowToPlay } from "@/components/HowToPlay";
@@ -18,6 +11,7 @@ import { PlayScreen } from "@/components/PlayScreen";
 import { ResultsScreen } from "@/components/ResultsScreen";
 import { MascotsModal } from "@/components/MascotsModal";
 import { ScorecardModal } from "@/components/ScorecardModal";
+import { LeaderboardModal } from "@/components/LeaderboardModal";
 import { TopControls } from "@/components/TopControls";
 
 export default function App() {
@@ -25,92 +19,113 @@ export default function App() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [showMascots, setShowMascots] = useState(false);
   const [showScorecard, setShowScorecard] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [home, setHome] = useState<HomeData | null>(null);
+
   const game = useGame();
   const auth = useAuth();
-  const mascots = useMascots();
-  const [playedToday, setPlayedToday] = useState(
-    () => localStorage.getItem("tailender.lastPlayed") === istDateKey()
-  );
-  const [scorecard, setScorecard] = useState<Scorecard | null>(() =>
-    loadTodayScorecard()
-  );
 
-  // On completion: save today's scorecard and mark the day played.
-  useEffect(() => {
-    if (game.phase === "results") {
-      const items = DAILY_QUESTIONS.map((q, i) => ({
-        prompt: q.prompt,
-        tier: game.results[i],
-        display: game.displays[i] ?? null,
-      }));
-      const total = game.results.reduce((s, t) => s + tierPoints(t), 0);
-      const sc: Scorecard = { date: istDateKey(), total, items };
-      saveScorecard(sc);
-      localStorage.setItem("tailender.lastPlayed", istDateKey());
-      setScorecard(sc);
-      setPlayedToday(true);
+  const refreshHome = useCallback(async () => {
+    if (!auth.user) return;
+    try {
+      setHome(await loadHome(auth.user.id));
+    } catch (e) {
+      console.error("loadHome", e);
     }
-  }, [game.phase, game.results, game.displays]);
+  }, [auth.user]);
 
-  function startGame() {
+  // Initial + on-auth-ready load.
+  useEffect(() => {
+    if (auth.ready && auth.user) refreshHome();
+  }, [auth.ready, auth.user, refreshHome]);
+
+  // Refresh home once a game is finalized (updates played/stats/mascots/streak).
+  useEffect(() => {
+    if (game.finishResult) refreshHome();
+  }, [game.finishResult, refreshHome]);
+
+  async function startGame() {
     setShowTutorial(false);
-    if (auth.user) auth.bumpStreak();
-    game.start();
+    localStorage.setItem("tailender.seenTutorial", "1");
+    await game.start();
   }
 
   function handlePlay() {
-    // Signed-out players get the how-to-play cards first.
-    if (auth.user) startGame();
+    if (localStorage.getItem("tailender.seenTutorial")) startGame();
     else setShowTutorial(true);
   }
 
+  async function equipMascot(id: string) {
+    try {
+      await api.equip(id);
+      await refreshHome();
+    } catch (e) {
+      console.error("equip", e);
+    }
+  }
+
   const atStart = game.phase === "start";
+  const puzzleNumber = puzzleFor();
+  const loadingReady = booted && auth.ready && home;
 
   return (
     <div className="grain relative min-h-dvh">
-      {booted && <TopControls />}
+      {loadingReady && <TopControls onOpenLeaderboard={() => setShowLeaderboard(true)} />}
 
       <AnimatePresence mode="wait">
-        {!booted && <Loader key="loader" onDone={() => setBooted(true)} />}
+        {!loadingReady && <Loader key="loader" onDone={() => setBooted(true)} />}
 
-        {booted && atStart && (
+        {loadingReady && atStart && (
           <StartScreen
             key="start"
             onStart={handlePlay}
-            user={auth.user}
-            streak={auth.streak}
+            isGuest={auth.isGuest}
             onSignIn={auth.signInWithGoogle}
-            selectedId={mascots.selectedId}
+            selectedId={home.equippedMascot}
             onOpenMascots={() => setShowMascots(true)}
-            playedToday={playedToday}
-            dayScore={scorecard?.total ?? 0}
+            onOpenLeaderboard={() => setShowLeaderboard(true)}
+            streak={home.streak}
+            playsToday={home.playsToday}
+            topToday={home.topToday}
+            puzzleNumber={puzzleNumber}
+            playedToday={!!home.scorecard}
+            dayScore={home.scorecard?.total ?? 0}
             onViewScorecard={() => setShowScorecard(true)}
           />
         )}
 
-        {booted && (game.phase === "playing" || game.phase === "reveal") && (
+        {loadingReady && game.phase === "loading" && <GameLoading key="gload" />}
+
+        {loadingReady && (game.phase === "playing" || game.phase === "reveal") && (
           <PlayScreen key="play" game={game} />
         )}
 
-        {booted && game.phase === "results" && (
-          <ResultsScreen key="results" results={game.results} onHome={game.goHome} />
+        {loadingReady && game.phase === "results" && (
+          <ResultsScreen
+            key="results"
+            items={game.finishResult?.items ?? []}
+            total={game.finishResult?.total ?? 0}
+            puzzleNumber={game.puzzleNumber}
+            onHome={game.goHome}
+          />
         )}
       </AnimatePresence>
 
-      {/* How-to-play pops up over the start screen for signed-out players */}
+      {/* How-to-play */}
       <AnimatePresence>
-        {booted && atStart && showTutorial && (
+        {loadingReady && atStart && showTutorial && (
           <HowToPlay key="howto" onDone={startGame} onSkip={startGame} />
         )}
       </AnimatePresence>
 
       {/* Mascots collection */}
       <AnimatePresence>
-        {showMascots && (
+        {showMascots && home && (
           <MascotsModal
             key="mascots"
-            selectedId={mascots.selectedId}
-            onSelect={mascots.select}
+            selectedId={home.equippedMascot}
+            unlocked={home.unlocked}
+            onSelect={equipMascot}
             onClose={() => setShowMascots(false)}
           />
         )}
@@ -118,15 +133,46 @@ export default function App() {
 
       {/* Today's scorecard */}
       <AnimatePresence>
-        {showScorecard && scorecard && (
+        {showScorecard && home?.scorecard && (
           <ScorecardModal
             key="scorecard"
-            scorecard={scorecard}
-            selectedId={mascots.selectedId}
+            items={home.scorecard.items}
+            total={home.scorecard.total}
+            puzzleNumber={puzzleNumber}
+            selectedId={home.equippedMascot}
             onClose={() => setShowScorecard(false)}
           />
         )}
       </AnimatePresence>
+
+      {/* Leaderboard */}
+      <AnimatePresence>
+        {showLeaderboard && (
+          <LeaderboardModal
+            key="leaderboard"
+            nickname={home?.nickname ?? null}
+            onNicknameSet={refreshHome}
+            onClose={() => setShowLeaderboard(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+function GameLoading() {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="flex min-h-dvh items-center justify-center px-6"
+    >
+      <div className="brut ground-card rounded-2xl px-8 py-6 text-center">
+        <p className="font-mono text-sm font-bold uppercase tracking-[0.2em] text-pitch-deep">
+          Rolling the 22 yards…
+        </p>
+      </div>
+    </motion.div>
   );
 }

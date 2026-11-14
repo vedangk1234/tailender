@@ -1,52 +1,44 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { resolveEntity } from "@/lib/recognition";
 import { SECONDS_PER_QUESTION, type TierId } from "@/lib/scoring";
+import { puzzleNumber as puzzleFor } from "@/lib/time";
 import {
-  DAILY_QUESTIONS,
-  ROSTER,
-  type Question,
-} from "@/data/mockDaily";
+  api,
+  type DailyQuestion,
+  type GuessResult,
+  type FinishResponse,
+} from "@/lib/api";
 
-export type Phase = "start" | "playing" | "reveal" | "results";
-
+export type Phase = "start" | "loading" | "playing" | "reveal" | "results";
 export type Feedback =
   | { kind: "recognised_wrong"; display: string }
   | { kind: "unrecognised" };
 
-export type GuessOutcome =
-  | { kind: "scored"; tier: TierId; display: string }
-  | Feedback;
-
-function evaluateGuess(input: string, question: Question): GuessOutcome {
-  const id = resolveEntity(input, ROSTER);
-  if (!id) return { kind: "unrecognised" };
-  const match = question.answers.find((a) => a.entityId === id);
-  const display = ROSTER.find((e) => e.id === id)!.canonical;
-  if (match) return { kind: "scored", tier: match.tier, display };
-  return { kind: "recognised_wrong", display };
-}
-
 export interface GameState {
   phase: Phase;
   qIndex: number;
-  question: Question;
+  question: DailyQuestion | undefined;
   total: number;
+  puzzleNumber: number;
   timeLeft: number;
   results: TierId[];
   displays: (string | null)[];
   feedback: Feedback | null;
   revealTier: TierId | null;
   lastScoredDisplay: string | null;
-  start: () => void;
-  submitGuess: (input: string) => GuessOutcome;
-  continueNext: () => void;
-  clearFeedback: () => void;
+  pending: boolean;
+  finishResult: FinishResponse | null;
+  start: () => Promise<void>;
+  submitGuess: (input: string) => Promise<GuessResult | null>;
   skipQuestion: () => void;
+  continueNext: () => Promise<void>;
+  clearFeedback: () => void;
   goHome: () => void;
 }
 
 export function useGame(): GameState {
   const [phase, setPhase] = useState<Phase>("start");
+  const [questions, setQuestions] = useState<DailyQuestion[]>([]);
+  const [puzzleNumber, setPuzzleNumber] = useState(() => puzzleFor());
   const [qIndex, setQIndex] = useState(0);
   const [results, setResults] = useState<TierId[]>([]);
   const [displays, setDisplays] = useState<(string | null)[]>([]);
@@ -54,9 +46,13 @@ export function useGame(): GameState {
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [revealTier, setRevealTier] = useState<TierId | null>(null);
   const [lastScoredDisplay, setLastScoredDisplay] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const [finishResult, setFinishResult] = useState<FinishResponse | null>(null);
+  const qStart = useRef(0);
+  const gameStart = useRef(0);
 
-  const question = DAILY_QUESTIONS[qIndex];
-  const total = DAILY_QUESTIONS.length;
+  const total = questions.length || 5;
+  const question = questions[qIndex];
 
   const lockTier = useCallback((tier: TierId, display: string | null) => {
     setResults((r) => [...r, tier]);
@@ -68,68 +64,92 @@ export function useGame(): GameState {
   }, []);
 
   // Per-question countdown.
-  const tierRef = useRef(lockTier);
-  tierRef.current = lockTier;
+  const lockRef = useRef(lockTier);
+  lockRef.current = lockTier;
   useEffect(() => {
     if (phase !== "playing") return;
     if (timeLeft <= 0) {
-      tierRef.current("duck", null); // timeout with no valid answer
+      lockRef.current("duck", null);
       return;
     }
     const id = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
     return () => clearTimeout(id);
   }, [phase, timeLeft]);
 
-  const start = useCallback(() => {
-    setPhase("playing");
-    setQIndex(0);
+  const start = useCallback(async () => {
+    setPhase("loading");
     setResults([]);
     setDisplays([]);
-    setTimeLeft(SECONDS_PER_QUESTION);
     setFeedback(null);
     setRevealTier(null);
     setLastScoredDisplay(null);
+    setFinishResult(null);
+    try {
+      const d = await api.daily();
+      setQuestions(d.questions);
+      setPuzzleNumber(d.puzzleNumber);
+      setQIndex(0);
+      setTimeLeft(SECONDS_PER_QUESTION);
+      qStart.current = Date.now();
+      gameStart.current = Date.now();
+      setPhase("playing");
+    } catch (e) {
+      console.error("daily failed", e);
+      setPhase("start");
+    }
   }, []);
 
   const submitGuess = useCallback(
-    (input: string): GuessOutcome => {
-      const outcome = evaluateGuess(input, DAILY_QUESTIONS[qIndex]);
-      if (outcome.kind === "scored") {
-        lockTier(outcome.tier, outcome.display);
-      } else {
-        setFeedback(outcome);
+    async (input: string): Promise<GuessResult | null> => {
+      if (phase !== "playing" || pending) return null;
+      setPending(true);
+      try {
+        const ms = Date.now() - qStart.current;
+        const out = await api.guess(qIndex, input, ms);
+        if (out.kind === "scored") lockTier(out.tier as TierId, out.display);
+        else setFeedback(out);
+        return out;
+      } catch (e) {
+        console.error("guess failed", e);
+        return null;
+      } finally {
+        setPending(false);
       }
-      return outcome;
     },
-    [qIndex, lockTier]
+    [phase, pending, qIndex, lockTier]
   );
 
-  const continueNext = useCallback(() => {
+  const skipQuestion = useCallback(() => {
+    if (phase === "playing") lockTier("duck", null);
+  }, [phase, lockTier]);
+
+  const continueNext = useCallback(async () => {
     setRevealTier(null);
     setLastScoredDisplay(null);
     if (qIndex + 1 < total) {
       setQIndex((i) => i + 1);
       setTimeLeft(SECONDS_PER_QUESTION);
+      qStart.current = Date.now();
       setPhase("playing");
     } else {
+      setPhase("loading");
+      try {
+        const r = await api.finish(Date.now() - gameStart.current);
+        setFinishResult(r);
+      } catch (e) {
+        console.error("finish failed", e);
+      }
       setPhase("results");
     }
   }, [qIndex, total]);
 
   const clearFeedback = useCallback(() => setFeedback(null), []);
 
-  // Skip the current question — scores a Duck (0) and moves on.
-  const skipQuestion = useCallback(() => {
-    if (phase !== "playing") return;
-    lockTier("duck", null);
-  }, [phase, lockTier]);
-
   const goHome = useCallback(() => {
     setPhase("start");
     setQIndex(0);
     setResults([]);
     setDisplays([]);
-    setTimeLeft(SECONDS_PER_QUESTION);
     setFeedback(null);
     setRevealTier(null);
     setLastScoredDisplay(null);
@@ -140,17 +160,20 @@ export function useGame(): GameState {
     qIndex,
     question,
     total,
+    puzzleNumber,
     timeLeft,
     results,
     displays,
     feedback,
     revealTier,
     lastScoredDisplay,
+    pending,
+    finishResult,
     start,
     submitGuess,
+    skipQuestion,
     continueNext,
     clearFeedback,
-    skipQuestion,
     goHome,
   };
 }

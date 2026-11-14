@@ -23,11 +23,11 @@ export function PlayScreen({ game }: { game: GameState }) {
     }
   }, [game.phase, game.qIndex]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!text.trim() || game.phase !== "playing") return;
-    const outcome = game.submitGuess(text);
-    if (outcome.kind !== "scored") {
+    if (!text.trim() || game.phase !== "playing" || game.pending) return;
+    const outcome = await game.submitGuess(text);
+    if (outcome && outcome.kind !== "scored") {
       requestAnimationFrame(() => inputRef.current?.select());
     }
   }
@@ -66,7 +66,7 @@ export function PlayScreen({ game }: { game: GameState }) {
             Question {game.qIndex + 1} of {game.total}
           </span>
           <h2 className="mt-4 text-balance text-3xl font-extrabold leading-tight text-ink">
-            {game.question.prompt}
+            {game.question?.prompt}
           </h2>
 
           <form onSubmit={handleSubmit} className="mt-7">
@@ -77,7 +77,7 @@ export function PlayScreen({ game }: { game: GameState }) {
               setText(e.target.value);
               if (game.feedback) game.clearFeedback();
             }}
-            disabled={game.phase !== "playing"}
+            disabled={game.phase !== "playing" || game.pending}
             placeholder="Type a name…"
             autoComplete="off"
             autoCorrect="off"
@@ -116,10 +116,10 @@ export function PlayScreen({ game }: { game: GameState }) {
 
           <button
             type="submit"
-            disabled={game.phase !== "playing" || !text.trim()}
+            disabled={game.phase !== "playing" || game.pending || !text.trim()}
             className="brut brut-tap mt-3 w-full rounded-xl bg-ink py-3.5 font-display text-lg uppercase tracking-wide text-paper disabled:opacity-30"
           >
-            Guess
+            {game.pending ? "…" : "Guess"}
           </button>
           </form>
 
