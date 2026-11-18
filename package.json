@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "validate:content": "node scripts/validateContent.mjs",
+    "seed": "node scripts/seed.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

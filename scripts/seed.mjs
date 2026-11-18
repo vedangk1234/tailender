@@ -1,55 +1,13 @@
-// Seed the mock cricket content (entities, questions, answers) into Supabase.
+// Seed the cricket content (entities, questions, answers) into Supabase.
 // Usage: SB_TOKEN=... node scripts/seed.mjs
+//
+// Content lives in scripts/content.mjs (shared with validateContent.mjs).
+// It is hand-authored from well-known cricket records — still spot-check before
+// a public launch, and keep growing the bank toward the ~500 spec target.
+import { ENTITIES, QUESTIONS } from "./content.mjs";
+
 const REF = "zomlnwhcfjhrvvczqcuv";
 const token = process.env.SB_TOKEN;
-
-const ENTITIES = [
-  ["dhoni", "MS Dhoni", ["dhoni", "ms dhoni", "mahendra singh dhoni", "mahi", "msd"]],
-  ["kapil_dev", "Kapil Dev", ["kapil", "kapil dev", "kapil dev nikhanj"]],
-  ["harbhajan", "Harbhajan Singh", ["harbhajan", "harbhajan singh", "bhajji"]],
-  ["irfan_pathan", "Irfan Pathan", ["irfan", "irfan pathan"]],
-  ["rohit_sharma", "Rohit Sharma", ["rohit", "rohit sharma", "hitman"]],
-  ["gambhir", "Gautam Gambhir", ["gambhir", "gautam gambhir", "gauti"]],
-  ["shreyas_iyer", "Shreyas Iyer", ["shreyas", "shreyas iyer", "iyer"]],
-  ["hardik_pandya", "Hardik Pandya", ["hardik", "hardik pandya", "pandya"]],
-  ["warner", "David Warner", ["warner", "david warner"]],
-  ["warne", "Shane Warne", ["warne", "shane warne"]],
-  ["gilchrist", "Adam Gilchrist", ["gilchrist", "adam gilchrist", "gilly"]],
-  ["sachin", "Sachin Tendulkar", ["sachin", "sachin tendulkar", "tendulkar"]],
-  ["sehwag", "Virender Sehwag", ["sehwag", "virender sehwag", "viru"]],
-  ["gayle", "Chris Gayle", ["gayle", "chris gayle"]],
-  ["guptill", "Martin Guptill", ["guptill", "martin guptill"]],
-  ["fakhar_zaman", "Fakhar Zaman", ["fakhar", "fakhar zaman"]],
-  ["ishan_kishan", "Ishan Kishan", ["ishan", "ishan kishan"]],
-  ["shubman_gill", "Shubman Gill", ["shubman", "shubman gill", "gill"]],
-  ["buttler", "Jos Buttler", ["buttler", "jos buttler"]],
-  ["finch", "Aaron Finch", ["finch", "aaron finch"]],
-  ["sammy", "Darren Sammy", ["sammy", "darren sammy"]],
-  ["collingwood", "Paul Collingwood", ["collingwood", "paul collingwood", "colly"]],
-  ["malinga", "Lasith Malinga", ["malinga", "lasith malinga"]],
-  ["younis_khan", "Younis Khan", ["younis", "younis khan", "younus khan"]],
-  ["kohli", "Virat Kohli", ["kohli", "virat kohli", "v kohli", "king kohli", "chiku"]],
-  ["abd", "AB de Villiers", ["abd", "ab de villiers", "de villiers", "mr 360"]],
-  ["bumrah", "Jasprit Bumrah", ["bumrah", "jasprit bumrah", "boom"]],
-  ["ponting", "Ricky Ponting", ["ponting", "ricky ponting", "punter"]],
-  ["wasim", "Wasim Akram", ["wasim", "wasim akram"]],
-  ["dravid", "Rahul Dravid", ["dravid", "rahul dravid", "the wall"]],
-  ["root", "Joe Root", ["root", "joe root"]],
-  ["williamson", "Kane Williamson", ["williamson", "kane williamson", "kane"]],
-];
-
-const QUESTIONS = [
-  { id: "q1", prompt: "Name a captain who lifted an ODI World Cup for India.", category: "International · ODI",
-    answers: [["dhoni", "single"], ["kapil_dev", "six"]] },
-  { id: "q2", prompt: "Name a bowler who has taken a Test hat-trick for India.", category: "International · Test",
-    answers: [["harbhajan", "boundary"], ["irfan_pathan", "century"]] },
-  { id: "q3", prompt: "Name a captain who has won the IPL title.", category: "IPL",
-    answers: [["dhoni", "single"], ["rohit_sharma", "double"], ["gambhir", "boundary"], ["shreyas_iyer", "half_century"], ["hardik_pandya", "six"], ["warner", "six"], ["warne", "century"], ["gilchrist", "century"]] },
-  { id: "q4", prompt: "Name a batter with a men's double century in ODIs.", category: "International · ODI",
-    answers: [["sachin", "single"], ["rohit_sharma", "double"], ["sehwag", "boundary"], ["gayle", "half_century"], ["guptill", "six"], ["fakhar_zaman", "six"], ["ishan_kishan", "century"], ["shubman_gill", "century"]] },
-  { id: "q5", prompt: "Name a captain who has won a men's T20 World Cup.", category: "International · T20",
-    answers: [["dhoni", "single"], ["rohit_sharma", "single"], ["buttler", "double"], ["finch", "boundary"], ["sammy", "half_century"], ["collingwood", "six"], ["malinga", "six"], ["younis_khan", "century"]] },
-];
 
 const q = (s) => "'" + String(s).replace(/'/g, "''") + "'";
 const arr = (a) => "array[" + a.map(q).join(",") + "]::text[]";
@@ -67,10 +25,16 @@ for (const qu of QUESTIONS) {
 
 const sql = lines.join("\n");
 
+if (!token) {
+  console.error("Set SB_TOKEN (Supabase access token) to run the seed.");
+  process.exit(1);
+}
+
 const res = await fetch(`https://api.supabase.com/v1/projects/${REF}/database/query`, {
   method: "POST",
   headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
   body: JSON.stringify({ query: sql }),
 });
 console.log("HTTP", res.status, (await res.text()).slice(0, 300));
+console.log(`Seeded ${ENTITIES.length} entities, ${QUESTIONS.length} questions.`);
 process.exit(res.ok ? 0 : 1);

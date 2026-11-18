@@ -1,0 +1,12 @@
+{
+  // Deploy the built SPA as a Cloudflare static-assets Worker.
+  // No Worker script (`main`) — just the static `dist` output.
+  "name": "tailender",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve index.html for unknown routes so client-side routes like
+    // /play resolve (replaces the Pages-only _redirects behaviour).
+    "not_found_handling": "single-page-application"
+  }
+}

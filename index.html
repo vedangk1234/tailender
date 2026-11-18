@@ -5,6 +5,96 @@
     <link rel="icon" type="image/svg+xml" href="/kangaroo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f3ecd9" />
+
+    <!-- Primary meta -->
+    <title>Tailender — Daily Cricket Trivia Game</title>
+    <meta
+      name="description"
+      content="Tailender is a free daily cricket trivia game. Five questions, thirty seconds each — the obvious answer scores least, the rarest valid answer scores a Century. New puzzle every day at midnight IST."
+    />
+    <meta
+      name="keywords"
+      content="cricket trivia, daily cricket game, cricket quiz, IPL trivia, cricket puzzle, daily puzzle, cricket wordle, cricket guessing game"
+    />
+    <meta name="author" content="Tailender" />
+    <!-- TODO: set to your production domain once deployed. -->
+    <link rel="canonical" href="https://tailender.app/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tailender" />
+    <meta property="og:title" content="Tailender — Daily Cricket Trivia Game" />
+    <meta
+      property="og:description"
+      content="Five cricket questions a day, thirty seconds each. The obvious answer scores least — name the cricketer nobody else will."
+    />
+    <meta property="og:url" content="https://tailender.app/" />
+    <meta property="og:image" content="https://tailender.app/BG.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tailender — Daily Cricket Trivia Game" />
+    <meta
+      name="twitter:description"
+      content="Five cricket questions a day, thirty seconds each. The obvious answer scores least."
+    />
+    <meta name="twitter:image" content="https://tailender.app/BG.png" />
+
+    <!-- Structured data: the app + the FAQ (helps rich results) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebApplication",
+            "name": "Tailender",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Web",
+            "description": "A free daily cricket trivia game where the obvious answer scores least and the rarest valid answer scores a Century.",
+            "url": "https://tailender.app/",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is Tailender?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Tailender is a free daily cricket trivia game. Each day there are five questions with a 30-second timer each. Every question has many correct answers — the common one scores the least and the rarest valid answer scores a Century (100 points)."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "When does a new puzzle come out?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A fresh puzzle drops every day at midnight IST. Everyone plays the same five questions, so you can compare scores with friends."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need an account to play?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. You can play instantly as a guest. Signing in with Google is optional and only needed to save streaks and appear on the global leaderboard."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is scoring decided?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Each valid answer has a pre-set obscurity tier, from Single (10) up to Century (100). The scoring is done on the server, so answer lists never reach your browser."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,14 +102,24 @@
       rel="stylesheet"
     />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <title>Tailender — Daily Cricket Trivia</title>
-    <meta
-      name="description"
-      content="Tailender is a free daily cricket trivia game. Five questions, thirty seconds each — the obvious answer scores least, the rarest valid answer scores a Century."
-    />
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Content for crawlers / users without JavaScript. -->
+    <noscript>
+      <main style="max-width: 40rem; margin: 2rem auto; padding: 0 1.25rem; font-family: system-ui, sans-serif; color: #141210;">
+        <h1>Tailender — Daily Cricket Trivia</h1>
+        <p>
+          Tailender is a free daily cricket trivia game. Five questions, thirty
+          seconds each — the obvious answer scores least and the rarest valid
+          answer scores a Century. A new puzzle drops every day at midnight IST,
+          covering international Test, ODI and T20 cricket plus the IPL.
+        </p>
+        <p><strong>Please enable JavaScript to play.</strong></p>
+      </main>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

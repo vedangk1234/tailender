@@ -87,9 +87,16 @@ export function resolveEntity(input: string, roster: Entity[]): Entity | null {
 
 // ---- Daily set resolution (same for `daily` and `guess`) ----
 export async function getDailySet(c: SupabaseClient, date: string) {
-  const { data: row } = await c.from("daily_sets").select("*").eq("date", date).maybeSingle();
+  let { data: row } = await c.from("daily_sets").select("*").eq("date", date).maybeSingle();
+
+  // Not built yet (cron hasn't run / isn't enabled) → build it now, then re-read.
+  if (!row) {
+    await c.rpc("build_daily_set", { d: date });
+    ({ data: row } = await c.from("daily_sets").select("*").eq("date", date).maybeSingle());
+  }
   if (row) return { puzzle: row.puzzle_number as number, ids: row.question_ids as string[] };
-  // Fallback: first 5 questions by id (mock phase, no cron yet).
+
+  // Final fallback: first 5 questions by id (e.g. RPC missing on an old DB).
   const { data: qs } = await c.from("questions").select("id").order("id").limit(QUESTIONS_PER_DAY);
   return { puzzle: puzzleNumber(date), ids: (qs ?? []).map((q: { id: string }) => q.id) };
 }
