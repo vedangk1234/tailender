@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tailender.app/sitemap.xml
+Sitemap: https://tailender.showstencil.workers.dev/sitemap.xml
