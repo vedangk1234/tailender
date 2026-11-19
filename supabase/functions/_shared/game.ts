@@ -62,8 +62,13 @@ function editDistance(a: string, b: string): number {
     }
   return d[al][bl];
 }
-function tolerance(len: number) {
-  return len <= 4 ? 1 : len <= 8 ? 2 : 3;
+// Strict fuzzy allowance — stops "fishing" (spamming short/near-miss strings to
+// let the matcher snap onto rare answers). Uses the shorter of input/alias
+// length; no fuzzy under 5 chars; 1 typo for 5-9, 2 for 10+ (was 1/2/3).
+function fuzzyAllowed(qLen: number, fLen: number): number {
+  const L = Math.min(qLen, fLen);
+  if (L < 5) return 0;
+  return L >= 10 ? 2 : 1;
 }
 
 export interface Entity { id: string; canonical: string; aliases: string[] }
@@ -78,8 +83,11 @@ export function resolveEntity(input: string, roster: Entity[]): Entity | null {
   let best: { e: Entity; dist: number } | null = null;
   for (const e of roster) {
     for (const f of [e.canonical, ...e.aliases].map(normalize)) {
+      const allowed = fuzzyAllowed(qn.length, f.length);
+      if (allowed === 0) continue;
+      if (Math.abs(qn.length - f.length) > allowed) continue;
       const dist = editDistance(qn, f);
-      if (dist <= tolerance(f.length) && (!best || dist < best.dist)) best = { e, dist };
+      if (dist <= allowed && (!best || dist < best.dist)) best = { e, dist };
     }
   }
   return best?.e ?? null;

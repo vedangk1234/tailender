@@ -52,34 +52,46 @@ export function editDistance(a: string, b: string): number {
   return d[al][bl];
 }
 
-/** Typo tolerance scales with word length. */
-function tolerance(len: number): number {
-  if (len <= 4) return 1;
-  if (len <= 8) return 2;
-  return 3;
+/**
+ * Fuzzy acceptance, deliberately strict to stop "fishing" (spamming short or
+ * near-miss strings to let the matcher snap onto rare answers you don't know):
+ *  - uses the SHORTER of input/alias length, so a short input can't borrow a
+ *    long alias's generous allowance;
+ *  - no fuzzy at all for forms/inputs under 5 chars (exact match only);
+ *  - one typo for 5–9 chars, two only for 10+ (down from the old 1/2/3).
+ */
+function fuzzyAllowed(qLen: number, fLen: number): number {
+  const L = Math.min(qLen, fLen);
+  if (L < 5) return 0;
+  return L >= 10 ? 2 : 1;
 }
 
 /**
  * Resolve typed text to an entity id, or null if unrecognised.
- * Exact alias match first, then nearest fuzzy match within tolerance.
+ * Exact alias match first, then nearest fuzzy match within a strict allowance.
  */
 export function resolveEntity(input: string, roster: Entity[]): string | null {
   const q = normalize(input);
   if (!q) return null;
 
-  // Exact match against canonical + aliases.
+  // Exact match against canonical + aliases (covers short aliases like "kp").
   for (const e of roster) {
     const forms = [e.canonical, ...e.aliases].map(normalize);
     if (forms.includes(q)) return e.id;
   }
 
-  // Fuzzy: nearest alias within tolerance.
+  // Fuzzy: nearest alias within the strict allowance.
   let best: { id: string; dist: number } | null = null;
   for (const e of roster) {
     const forms = [e.canonical, ...e.aliases].map(normalize);
     for (const f of forms) {
+      const allowed = fuzzyAllowed(q.length, f.length);
+      if (allowed === 0) continue;
+      // Length must stay close — blocks a short fishing input matching a long
+      // name (and vice versa).
+      if (Math.abs(q.length - f.length) > allowed) continue;
       const dist = editDistance(q, f);
-      if (dist <= tolerance(f.length) && (!best || dist < best.dist)) {
+      if (dist <= allowed && (!best || dist < best.dist)) {
         best = { id: e.id, dist };
       }
     }
