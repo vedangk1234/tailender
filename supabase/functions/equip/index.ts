@@ -6,8 +6,8 @@ Deno.serve(async (req) => {
   try {
     const user = await getUser(req);
     if (!user) return json({ error: "unauthorized" }, 401);
-    const { mascotId } = await req.json();
-    if (typeof mascotId !== "string") return json({ error: "bad request" }, 400);
+    const { mascotId } = await req.json().catch(() => ({}));
+    if (typeof mascotId !== "string" || mascotId.length > 40) return json({ error: "bad request" }, 400);
 
     const c = serviceClient();
     // Must be unlocked.
@@ -21,6 +21,7 @@ Deno.serve(async (req) => {
     });
     return json({ equipped: mascotId });
   } catch (e) {
-    return json({ error: String(e) }, 500);
+    console.error("equip error:", e);
+    return json({ error: "server error" }, 500);
   }
 });

@@ -25,6 +25,7 @@ Deno.serve(async (req) => {
 
     return json({ date, puzzleNumber: puzzle, questions });
   } catch (e) {
-    return json({ error: String(e) }, 500);
+    console.error("daily error:", e);
+    return json({ error: "server error" }, 500);
   }
 });

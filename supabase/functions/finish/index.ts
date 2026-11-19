@@ -10,7 +10,9 @@ Deno.serve(async (req) => {
     const user = await getUser(req);
     if (!user) return json({ error: "unauthorized" }, 401);
     const body = await req.json().catch(() => ({}));
-    const timeMs = typeof body.timeMs === "number" ? body.timeMs : 0;
+    // Client-supplied; clamp so it can't be gamed (0/negative tops tiebreaks).
+    const rawTime = typeof body.timeMs === "number" && Number.isFinite(body.timeMs) ? body.timeMs : 0;
+    const timeMs = Math.max(0, Math.min(rawTime, 900000));
 
     const c = serviceClient();
     const date = istDate();
@@ -66,7 +68,7 @@ Deno.serve(async (req) => {
       const { error: scErr } = await c
         .from("scorecards")
         .insert({ user_id: user.id, date, total, time_ms: timeMs, items });
-      if (scErr) return json({ error: "scorecard insert failed: " + scErr.message }, 500);
+      if (scErr) { console.error("scorecard insert failed:", scErr); return json({ error: "server error" }, 500); }
 
       // ---- daily stats ----
       const { data: ds } = await c.from("daily_stats").select("*").eq("date", date).maybeSingle();
@@ -99,6 +101,7 @@ Deno.serve(async (req) => {
       alreadyPlayed: !!existing,
     });
   } catch (e) {
-    return json({ error: String(e) }, 500);
+    console.error("finish error:", e);
+    return json({ error: "server error" }, 500);
   }
 });
