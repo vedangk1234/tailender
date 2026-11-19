@@ -58,7 +58,7 @@ export function StartScreen({
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex min-h-dvh w-full flex-col items-center justify-center gap-4 px-4 py-6 lg:h-dvh lg:overflow-hidden"
+      className="flex min-h-dvh w-full flex-col items-center justify-center gap-4 px-4 pb-6 pt-16 lg:h-dvh lg:py-6 lg:overflow-hidden"
     >
       <h2
         className="font-display max-w-[797px] text-balance text-center text-3xl uppercase leading-tight tracking-tight text-cream sm:text-4xl"

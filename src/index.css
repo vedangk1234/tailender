@@ -103,6 +103,13 @@ body,
   height: 100%;
 }
 
+/* Never allow sideways scroll on narrow screens. */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 /* Hide scrollbars everywhere while keeping scroll functional. */
 * {
   scrollbar-width: none; /* Firefox */
@@ -128,6 +135,15 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+
+/* iOS/mobile Safari mis-renders `background-attachment: fixed` (blank or
+   zoomed background). Fall back to a scrolling background on small/touch
+   screens so the stadium backdrop shows correctly on phones. */
+@media (max-width: 1024px), (hover: none) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 /* The "ground" surface — our original bone paper + pitch-crease grid.
