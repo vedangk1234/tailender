@@ -74,12 +74,10 @@ insert into public.entities(id,canonical,aliases,kind) values('harmeet_singh_ban
 insert into public.entities(id,canonical,aliases,kind) values('kalyankrishna_doddapaneni','Kalyankrishna Doddapaneni',array['kalyankrishna doddapaneni']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('vijaykumar_paidikalva','Vijaykumar Paidikalva',array['vijaykumar paidikalva']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('jaskaran_singh','Jaskaran Singh',array['jaskaran singh']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('kd_karthik','KD Karthik',array['kd karthik']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('vy_mahesh','VY Mahesh',array['vy mahesh']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('p_sangwan','P Sangwan',array['p sangwan']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('m_manhas','M Manhas',array['m manhas']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('r_bhatia','R Bhatia',array['r bhatia']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('mf_maharoof','MF Maharoof',array['mf maharoof']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('y_nagar','Y Nagar',array['y nagar']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('k_goel','K Goel',array['k goel']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('dpmd_jayawardene','DPMD Jayawardene',array['dpmd jayawardene']::text[],'player') on conflict(id) do nothing;
@@ -90,7 +88,6 @@ insert into public.entities(id,canonical,aliases,kind) values('wa_mota','WA Mota
 insert into public.entities(id,canonical,aliases,kind) values('rr_bose','RR Bose',array['rr bose']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('tm_srivastava','TM Srivastava',array['tm srivastava']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('s_sohal','S Sohal',array['s sohal']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('baw_mendis','BAW Mendis',array['baw mendis']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('k_anureet_singh','K Anureet Singh',array['k anureet singh']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('an_ghosh','AN Ghosh',array['an ghosh']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('ss_shaikh','SS Shaikh',array['ss shaikh']::text[],'player') on conflict(id) do nothing;
@@ -99,7 +96,6 @@ insert into public.entities(id,canonical,aliases,kind) values('chetanya_nanda','
 insert into public.entities(id,canonical,aliases,kind) values('ra_shaikh','RA Shaikh',array['ra shaikh']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('sa_asnodkar','SA Asnodkar',array['sa asnodkar']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('nk_patel','NK Patel',array['nk patel']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('ad_mascarenhas','AD Mascarenhas',array['ad mascarenhas']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('m_rawat','M Rawat',array['m rawat']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('mm_patel','MM Patel',array['mm patel']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('pc_valthaty','PC Valthaty',array['pc valthaty']::text[],'player') on conflict(id) do nothing;
@@ -232,7 +228,6 @@ insert into public.entities(id,canonical,aliases,kind) values('pravin_tambe','Pr
 insert into public.entities(id,canonical,aliases,kind) values('sheldon_jackson','Sheldon Jackson',array['sheldon jackson']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('thalaivan_sargunam','Thalaivan Sargunam',array['thalaivan sargunam']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('hs_sharath','HS Sharath',array['hs sharath']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('akshar_patel','Akshar Patel',array['akshar patel']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('karanveer_singh','Karanveer Singh',array['karanveer singh']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('sayan_mondal','Sayan Mondal',array['sayan mondal']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('apoorv_wankhade','Apoorv Wankhade',array['apoorv wankhade']::text[],'player') on conflict(id) do nothing;
@@ -288,7 +283,6 @@ insert into public.entities(id,canonical,aliases,kind) values('milind_tandon','M
 insert into public.entities(id,canonical,aliases,kind) values('saurabh_kumar','Saurabh Kumar',array['saurabh kumar']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('sreenath_arvind','Sreenath Arvind',array['sreenath arvind']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('tanmay_agarwal','Tanmay Agarwal',array['tanmay agarwal']::text[],'player') on conflict(id) do nothing;
-insert into public.entities(id,canonical,aliases,kind) values('km_asif','KM Asif',array['km asif']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('kanishk_seth','Kanishk Seth',array['kanishk seth']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('narayan_jagadeesan','Narayan Jagadeesan',array['narayan jagadeesan']::text[],'player') on conflict(id) do nothing;
 insert into public.entities(id,canonical,aliases,kind) values('dhruv_shorey','Dhruv Shorey',array['dhruv shorey']::text[],'player') on conflict(id) do nothing;
@@ -516,10 +510,10 @@ insert into public.player_groups(player_id,group_id,years) values('tejashwi_yada
 insert into public.player_groups(player_id,group_id,years) values('shoaib_malik','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('daniel_vettori','ipl_dc','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('rajat_bhatia','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('farveez_maharoof','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('farveez_maharoof','ipl_dc','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('yogesh_nagar','ipl_dc','{2008,2011,2012}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('abd','ipl_dc','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('dinesh_karthik','ipl_dc','{2008,2014}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('dinesh_karthik','ipl_dc','{2008,2009,2010,2014}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('glenn_mcgrath','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('yo_mahesh','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('mohammad_asif','ipl_dc','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -573,7 +567,7 @@ insert into public.player_groups(player_id,group_id,years) values('ashok_dinda',
 insert into public.player_groups(player_id,group_id,years) values('shoaib_akhtar','ipl_kkr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('murali_kartik','ipl_kkr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('ishant_sharma','ipl_kkr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('ajantha_mendis','ipl_kkr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('ajantha_mendis','ipl_kkr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('umar_gul','ipl_kkr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('ajit_agarkar','ipl_kkr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('siddarth_kaul','ipl_kkr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -622,7 +616,7 @@ insert into public.player_groups(player_id,group_id,years) values('aditya_angle'
 insert into public.player_groups(player_id,group_id,years) values('jaydev_shah','ipl_rr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('jadeja','ipl_rr','{2008,2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('yusuf_pathan','ipl_rr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('dimitri_mascarenhas','ipl_rr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('dimitri_mascarenhas','ipl_rr','{2008,2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('shane_watson','ipl_rr','{2008,2010,2011,2012,2013,2014,2015}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('sumit_khatri','ipl_rr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('parag_more','ipl_rr','{2008}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -677,7 +671,6 @@ insert into public.player_groups(player_id,group_id,years) values('kalyankrishna
 insert into public.player_groups(player_id,group_id,years) values('fidel_edwards','ipl_deccan','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('vijaykumar_paidikalva','ipl_deccan','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('jaskaran_singh','ipl_deccan','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('kd_karthik','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('dirk_nannes','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('vy_mahesh','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('aavishkar_salvi','ipl_dc','{2009,2011}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -686,7 +679,6 @@ insert into public.player_groups(player_id,group_id,years) values('ashish_nehra'
 insert into public.player_groups(player_id,group_id,years) values('m_manhas','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('warner','ipl_dc','{2009,2010,2011,2012,2013,2022,2023,2024}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('r_bhatia','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('mf_maharoof','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('andrew_mcdonald','ipl_dc','{2009,2010,2011}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('y_nagar','ipl_dc','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('ravi_bopara','ipl_pbks','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -702,7 +694,6 @@ insert into public.player_groups(player_id,group_id,years) values('tm_srivastava
 insert into public.player_groups(player_id,group_id,years) values('s_sohal','ipl_pbks','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('moises_henriques','ipl_kkr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('sanjay_bangar','ipl_kkr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('baw_mendis','ipl_kkr','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('k_anureet_singh','ipl_kkr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('morn_van_wyk','ipl_kkr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('soumya_sarkar','ipl_kkr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -723,7 +714,6 @@ insert into public.player_groups(player_id,group_id,years) values('ra_shaikh','i
 insert into public.player_groups(player_id,group_id,years) values('sa_asnodkar','ipl_rr','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('nk_patel','ipl_rr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('tyron_henderson','ipl_rr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('ad_mascarenhas','ipl_rr','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('m_rawat','ipl_rr','{2009}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('mm_patel','ipl_rr','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('kabir_khan','ipl_rr','{2009,2010}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -1223,7 +1213,7 @@ insert into public.player_groups(player_id,group_id,years) values('george_bailey
 insert into public.player_groups(player_id,group_id,years) values('sehwag','ipl_pbks','{2014,2015}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('cheteshwar_pujara','ipl_pbks','{2014}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('thisara_perera','ipl_pbks','{2014,2015}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('akshar_patel','ipl_pbks','{2014}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('axar_patel','ipl_pbks','{2014,2015,2016,2017,2018}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('glenn_maxwell','ipl_pbks','{2014,2015,2016,2017,2020,2025}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('wriddhiman_saha','ipl_pbks','{2014,2015,2016,2017}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('murali_kartik','ipl_pbks','{2014}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -1322,7 +1312,6 @@ insert into public.player_groups(player_id,group_id,years) values('travis_head',
 insert into public.player_groups(player_id,group_id,years) values('albie_morkel','ipl_dc','{2015}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('marcus_stoinis','ipl_dc','{2015,2020,2021}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('murali_vijay','ipl_pbks','{2015,2016,2017}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('axar_patel','ipl_pbks','{2015,2016,2017,2018}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('gurkeerat_singh_mann','ipl_pbks','{2015,2016,2017}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('nikhil_naik','ipl_pbks','{2015,2016,2017}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('yogesh_golwalkar','ipl_pbks','{2015}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -1558,7 +1547,7 @@ insert into public.player_groups(player_id,group_id,years) values('mitchell_sant
 insert into public.player_groups(player_id,group_id,years) values('mark_wood','ipl_csk','{2018}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('david_willey','ipl_csk','{2018,2019}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('lungi_ngidi','ipl_csk','{2018,2019,2020,2021}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('km_asif','ipl_csk','{2018,2019,2020,2021,2022}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('mohammad_asif','ipl_csk','{2018,2019,2020,2021,2022}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('mukesh_kumar','ipl_csk','{2018,2019,2020}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('kanishk_seth','ipl_csk','{2018}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('narayan_jagadeesan','ipl_csk','{2018,2019,2020,2021,2022}') on conflict(player_id,group_id) do update set years=excluded.years;
@@ -2102,7 +2091,7 @@ insert into public.player_groups(player_id,group_id,years) values('donovan_ferre
 insert into public.player_groups(player_id,group_id,years) values('jason_holder','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('akash_vasisht','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('murugan_ashwin','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
-insert into public.player_groups(player_id,group_id,years) values('km_asif','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
+insert into public.player_groups(player_id,group_id,years) values('mohammad_asif','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('kc_cariappa','ipl_rr','{2023}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('sandeep_sharma','ipl_rr','{2023,2024,2025}') on conflict(player_id,group_id) do update set years=excluded.years;
 insert into public.player_groups(player_id,group_id,years) values('adam_zampa','ipl_rr','{2023,2024}') on conflict(player_id,group_id) do update set years=excluded.years;
