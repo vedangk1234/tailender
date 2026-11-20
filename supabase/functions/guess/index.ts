@@ -48,9 +48,17 @@ Deno.serve(async (req) => {
     if (typeof attempts === "number" && attempts > MAX_GUESSES_PER_Q)
       return json({ kind: "rate_limited" }, 429);
 
-    // Full roster for recognition (so we can say "recognised, not in list").
-    const { data: entities } = await c.from("entities").select("id, canonical, aliases");
-    const resolved = resolveEntity(guess, (entities ?? []) as Entity[]);
+    // Full roster for recognition. The data API caps a single select at ~1000
+    // rows, so page through all entities (we have 2800+).
+    const roster: Entity[] = [];
+    for (let from = 0; ; from += 1000) {
+      const { data } = await c
+        .from("entities").select("id, canonical, aliases").order("id").range(from, from + 999);
+      if (!data?.length) break;
+      roster.push(...(data as Entity[]));
+      if (data.length < 1000) break;
+    }
+    const resolved = resolveEntity(guess, roster);
 
     if (!resolved) return json({ kind: "unrecognised" });
 
