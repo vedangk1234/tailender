@@ -23,7 +23,7 @@ export function ResultsScreen({
     puzzleNumber,
     totalScore: total,
     tiers,
-    shareUrl: "https://tailender.game",
+    shareUrl: "https://tailender.showstencil.workers.dev",
   });
 
   async function copy() {
@@ -66,7 +66,7 @@ export function ResultsScreen({
           <div className="my-2 text-2xl tracking-wide">
             {tiers.map((t) => TIERS[t].emoji).join(" ")}
           </div>
-          <div className="text-pitch-deep">tailender.game</div>
+          <div className="text-pitch-deep">tailender.showstencil.workers.dev</div>
         </div>
 
         <button

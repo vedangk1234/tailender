@@ -94,7 +94,7 @@ export function ScorecardModal({
       puzzleNumber,
       totalScore: total,
       tiers: items.map((i) => i.tier as TierId),
-      shareUrl: "https://tailender.game",
+      shareUrl: "https://tailender.showstencil.workers.dev",
     });
     try {
       await navigator.clipboard.writeText(text);
