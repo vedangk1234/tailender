@@ -62,10 +62,11 @@ export function MascotsModal({
                 key={m.id}
                 onClick={() => isOwned && onSelect(m.id)}
                 disabled={!isOwned}
+                title={!isOwned ? `Unlock: ${m.achievement}` : undefined}
                 className={cn(
-                  "brut-sm brut-tap relative flex flex-col items-center gap-1 rounded-2xl bg-paper p-3 text-center",
+                  "group brut-sm brut-tap relative flex flex-col items-center gap-1 rounded-2xl bg-paper p-3 text-center",
                   equipped && "ring-4 ring-pitch",
-                  !isOwned && "cursor-default"
+                  !isOwned && "cursor-help"
                 )}
               >
                 {equipped && (
@@ -74,8 +75,14 @@ export function MascotsModal({
                   </span>
                 )}
                 {!isOwned && (
-                  <span className="absolute right-2 top-2 z-10 grid size-5 place-items-center rounded border-2 border-ink bg-ink text-paper">
+                  <span className="absolute right-2 top-2 z-10 grid size-5 place-items-center rounded border-2 border-ink bg-ink text-paper transition group-hover:bg-cherry">
                     <Lock size={10} />
+                  </span>
+                )}
+                {/* Hover reveal: how to unlock this locked mascot */}
+                {!isOwned && (
+                  <span className="pointer-events-none absolute inset-x-2 top-2 z-20 rounded-md border-2 border-ink bg-sun px-2 py-1.5 font-mono text-[9px] font-bold uppercase leading-tight tracking-wide text-ink opacity-0 shadow-[3px_3px_0_var(--color-ink)] transition-opacity duration-150 group-hover:opacity-100">
+                    🔒 Unlock: {m.achievement}
                   </span>
                 )}
                 <div className="flex h-24 w-full items-end justify-center">
