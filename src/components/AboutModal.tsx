@@ -11,7 +11,7 @@ const SOCIALS = [
 ];
 
 const REPORT_MAILTO =
-  "mailto:hello@tailender.game?subject=Tailender%20problem%20report&body=What%20happened%3A%0A%0AToday%27s%20puzzle%20%231";
+  "mailto:vedangk2912@gmail.com?subject=Tailender%20problem%20report&body=What%20happened%3A%0A%0AToday%27s%20puzzle%20%231";
 
 export function AboutModal({
   onClose,

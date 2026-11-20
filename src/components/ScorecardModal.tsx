@@ -185,7 +185,7 @@ export function ScorecardModal({
         </button>
 
         <a
-          href="mailto:hello@tailender.game?subject=Tailender%20question%20report&body=Puzzle%20%231%20%E2%80%94%20what%27s%20wrong%3A%0A%0A"
+          href="mailto:vedangk2912@gmail.com?subject=Tailender%20question%20report&body=Puzzle%20%231%20%E2%80%94%20what%27s%20wrong%3A%0A%0A"
           className="mt-3 block text-center font-mono text-[10px] font-bold uppercase tracking-widest text-ink/45 hover:text-ink"
         >
           ⚑ Report a problem with this quiz

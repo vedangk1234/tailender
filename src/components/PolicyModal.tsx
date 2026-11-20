@@ -12,7 +12,7 @@ const CONTENT: Record<PolicyKind, { title: string; body: string[] }> = {
       "What we store: if you sign in with Google we store your name, email and profile picture to show you on leaderboards and to save your streak and progress. If you play as a guest, your streak and settings are stored only in your browser (localStorage).",
       "What we don't do: we don't sell your data, and we don't use it for advertising.",
       "Cookies / local storage: used to remember your settings, streak, equipped mascot and whether you've played today.",
-      "Contact: email hello@tailender.game for any privacy request, including deletion of your account data.",
+      "Contact: email vedangk2912@gmail.com for any privacy request, including deletion of your account data.",
     ],
   },
   terms: {
@@ -24,7 +24,7 @@ const CONTENT: Record<PolicyKind, { title: string; body: string[] }> = {
       "Content: team names used in cosmetic jerseys are playful parodies and are not affiliated with, endorsed by, or sponsored by any real team, league, or board.",
       "Accounts: you're responsible for activity under your account. We may remove accounts that abuse the service.",
       "Changes: we may update the game and these terms over time.",
-      "Contact: hello@tailender.game.",
+      "Contact: vedangk2912@gmail.com.",
     ],
   },
 };
