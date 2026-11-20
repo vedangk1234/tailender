@@ -219,6 +219,7 @@ insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3p
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','warner','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','mitchell_starc','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','josh_hazlewood','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
+insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','sammy','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','shane_watson','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','mitchell_johnson','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','harbhajan','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
