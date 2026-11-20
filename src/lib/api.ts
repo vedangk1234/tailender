@@ -15,7 +15,14 @@ export type GuessResult =
   | { kind: "recognised_wrong"; display: string }
   | { kind: "unrecognised" };
 
-export interface ScoreItem { prompt: string; tier: string; display: string | null }
+export interface AnswerKeyEntry { display: string; tier: string }
+export interface ScoreItem {
+  prompt: string;
+  tier: string;
+  display: string | null;
+  /** Full valid-answer list for this question (revealed after the game). */
+  answers?: AnswerKeyEntry[];
+}
 export interface FinishResponse {
   total: number;
   items: ScoreItem[];

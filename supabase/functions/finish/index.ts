@@ -93,9 +93,23 @@ Deno.serve(async (req) => {
       await c.from("mascots_unlocked").insert(newOnes.map((m) => ({ user_id: user.id, mascot_id: m })));
     }
 
+    // ---- Full answer key per question (safe to reveal: the game is over) ----
+    const { data: aRows } = await c
+      .from("question_answers").select("question_id, entity_id, tier").in("question_id", ids);
+    const eIds = [...new Set((aRows ?? []).map((a) => a.entity_id))];
+    const { data: ents } = await c.from("entities").select("id, canonical").in("id", eIds);
+    const nameById = new Map((ents ?? []).map((e) => [e.id, e.canonical]));
+    const keyByQ = new Map<string, { display: string; tier: string }[]>();
+    for (const a of aRows ?? []) {
+      const arr = keyByQ.get(a.question_id) ?? [];
+      arr.push({ display: nameById.get(a.entity_id) ?? "", tier: a.tier });
+      keyByQ.set(a.question_id, arr);
+    }
+    const itemsWithKey = ids.map((qid, i) => ({ ...items[i], answers: keyByQ.get(qid) ?? [] }));
+
     const league = leagueFor(total);
     return json({
-      total, items, streak,
+      total, items: itemsWithKey, streak,
       league: { id: league.id, name: league.name },
       newUnlocks: newOnes,
       alreadyPlayed: !!existing,
