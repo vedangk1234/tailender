@@ -220,10 +220,12 @@ insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3p
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','mitchell_starc','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','josh_hazlewood','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','sammy','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
+insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','gayle','boundary') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','shane_watson','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','mitchell_johnson','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','harbhajan','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','jadeja','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
+insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','dwayne_bravo','half_century') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','andrew_symonds','six') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','michael_hussey','six') on conflict(question_id,entity_id) do update set tier=excluded.tier;
 insert into public.question_answers(question_id,entity_id,tier) values('q_icc_3plus','brett_lee','six') on conflict(question_id,entity_id) do update set tier=excluded.tier;
